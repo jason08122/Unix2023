@@ -1,0 +1,14 @@
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+Found write at index 6, offset 0x8e38
+Found read at index 23, offset 0x8ec0
+Found open at index 39, offset 0x8f40
+56144d727000
+56144d729000
+56144d72d000
+56144d72f000
+56144d730000
+bbbbbbbbbbbbbbb
+ccccccccccccccccccc
+[logger] open("aaa.txt", 0, 0) = -1
+cat: aaa.txt: Permission denied
+I'm back
