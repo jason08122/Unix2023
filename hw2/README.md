@@ -1,15 +1,4 @@
-# :pencil: Hw 1 - Secured API Call
-
-## Introduction
-
-This project implement the **Library Hijacking** and **GOT Table Rewriting**.
-Before rewriting got table, it need to **parse elf** of execution file to get got offset.
-
-This project aims to monitor the process of execution (print log file).
-
-<br>
-
-# :pencil: Hw 2 - Simple Instruction level debugger
+# Simple Instruction level debugger
 
 ## Introduction
 
@@ -133,37 +122,3 @@ Debugger launches the target program when the debugger starts. The program shoul
     4000d2: c3 ret
     ** the address is out of the range of the text section.
     ```
-
-<br>
-
-# :page_facing_up: Lab 1  
-
-<br>
-
-# :page_facing_up: Lab 2  
-
-<br>
-
-# :page_facing_up: Lab 3  
-
-<br>
-
-# :page_facing_up: Lab 4  
-
-<br>
-
-# :page_facing_up: Lab 5  
-
-<br>
-
-# :page_facing_up: Lab 6  
-
-<br>
-
-# :page_facing_up: Lab 7  
-
-<br>
-
-# :page_facing_up: Lab 8  
-
-<br>
