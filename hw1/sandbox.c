@@ -648,25 +648,25 @@ int __libc_start_main(int (*main)(int, char**, char**), int argc, char *argv[], 
             
             if (strncmp(symname, "read",4) == 0) {
                 printf("Found read at index %d, offset 0x%lx\n", i, rela->r_offset);
-                // FindBaseAndHijack("myread", rela->r_offset);
+                FindBaseAndHijack("myread", rela->r_offset);
             }else if(strncmp(symname,"open",4)==0){
                 printf("Found open at index %d, offset 0x%lx\n", i, rela->r_offset);
                 g_path = argv[1];
-                // FindBaseAndHijack("myopen", rela->r_offset);
+                FindBaseAndHijack("myopen", rela->r_offset);
             }else if(strncmp(symname,"write",5)==0){
                 printf("Found write at index %d, offset 0x%lx\n", i, rela->r_offset);
                 FindBaseAndHijack("mywrite", rela->r_offset);
             }else if(strncmp(symname,"connect",7)==0){
                 printf("Found connect at index %d, offset 0x%lx\n", i, rela->r_offset);
                 g_url = argv[1];
-                // FindBaseAndHijack("myconnect", rela->r_offset);
+                FindBaseAndHijack("myconnect", rela->r_offset);
             }else if(strncmp(symname,"getaddrinfo",11)==0){
                 // g_url = argv[1];
                 printf("Found getaddrinfo at index %d, offset 0x%lx\n", i, rela->r_offset);
-                // FindBaseAndHijack("mygetaddrinfo", rela->r_offset);
+                FindBaseAndHijack("mygetaddrinfo", rela->r_offset);
             }else if(strncmp(symname,"system",6)==0){
                 printf("Found system at index %d, offset 0x%lx\n", i, rela->r_offset);
-                // FindBaseAndHijack("mysystem", rela->r_offset);
+                FindBaseAndHijack("mysystem", rela->r_offset);
             }
         }
     }
