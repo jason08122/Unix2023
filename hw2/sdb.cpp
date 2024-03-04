@@ -125,10 +125,7 @@ void Elf_setStartEndRip (char* elf_path)
             break;
         }
     }
-    
-    // printf("Start RIP: 0x%llx\n", startRip);
-    // printf("End RIP: 0x%llx\n", endRip);
-    
+        
     close(fd);
     StartRip = startRip;
     EndRip = endRip;
@@ -267,15 +264,9 @@ int main(int argc, char* argv[]) {
             }
 
             rip = regs.rip;
-            // ret = ptrace(PTRACE_PEEKTEXT, pid, base_rip, 0);
-            // fprintf(stderr, "%llx: %2.2x %2.2x %2.2x %2.2x %2.2x\n", base_rip, ptr[0], ptr[1], ptr[2], ptr[3], ptr[4]);
+            
             uint8_t code[CODE_SIZE];
-            // auto c_it = BreakPointsTable.find(rip + i);
-            // if ( c_it != BreakPointsTable.end()) code = it->second.code;
-            // else
-            // {
-                
-            // }
+
             for (int i = 0; i < CODE_SIZE; i++) 
             {
                 // code[i] = ptrace(PTRACE_PEEKTEXT, pid, rip + i, 0);
@@ -329,19 +320,13 @@ int main(int argc, char* argv[]) {
                     regs = anchor1.AnchorRegs;
                     if (ptrace(PTRACE_SETREGS, pid, 0, &regs) != 0) errquit("Break point restore regs");
                     BreakPointsTable = anchor1._BreakPointsTable;
-                    // int parts = (EndRip - StartRip)/8;
-                    // int remainder = (EndRip - StartRip)%8;
-                    // int i=0, j =0;
+                    
                     int c = 0;
-                    // for ( unsigned long long i=StartRip;i<EndRip;i += 8)
-                    // {
-                    //     // printf("0x%llx\n", anchor1.text_section[i]);
-                    //     if (ptrace(PTRACE_POKETEXT, pid, i, anchor1.text_section[c++]) != 0) errquit("ptrace(POKETEXT)");
-                    // }
+                    
                     for ( unsigned long long i=DataStartAddr;i<DataEndAddr;i += 8)
                     {
-                        // printf("0x%llx\n", anchor1.text_section[i]);
-                        if (ptrace(PTRACE_POKETEXT, pid, i, anchor1.data_section[c++]) != 0) errquit("ptrace(POKETEXT)");
+                        if (ptrace(PTRACE_POKETEXT, pid, i, anchor1.data_section[c++]) != 0) 
+                            errquit("ptrace(POKETEXT)");
                     }
                     break;
                 }
@@ -351,65 +336,26 @@ int main(int argc, char* argv[]) {
                     anchor1.AnchorRegs = regs;
                     anchor1._BreakPointsTable = BreakPointsTable;
                     
-                    // for ( unsigned long long i=StartRip;i<EndRip;i += 8)
-                    // {
-                    //     long tmp = ptrace(PTRACE_PEEKTEXT, pid, i, 0);
-                    //     // printf("%llx\n%llx\n", i, tmp);
-                    //     anchor1.text_section.push_back(tmp);
-                    // }
                     vector<long> tmp_data_section;
                     DataStartAddr = maps_section.front().first;
                     DataEndAddr = maps_section.back().second;
                     for ( unsigned long long i=DataStartAddr;i<DataEndAddr;i += 8)
                     {
                         long tmp = ptrace(PTRACE_PEEKTEXT, pid, i, 0);
-                        // printf("%llx\n%llx\n", i, tmp);
                         tmp_data_section.push_back(tmp);
                     }
                     anchor1.data_section = tmp_data_section;
-                    // vector<vector<long>> data_section;
-
-                    // for (auto vec:maps_section)
-                    // {
-                    //     vector<long> tmp;
-                    //     unsigned long long head = vec.first;
-                    //     unsigned long long tail = vec.second;
-
-                    //     for ( unsigned long long i=head;i<tail;i += 8)
-                    //     {
-                    //         long ptxt = ptrace(PTRACE_PEEKTEXT, pid, i, 0);
-                    //         // printf("%llx\n%llx\n", i, tmp);
-                    //         tmp.push_back(ptxt);
-                    //     }
-                    //     data_section.push_back(tmp);
-                    // }
                 }
                 else if (strcmp(command, Break) == 0)
                 {
                     char target[16];
                     scanf("%s", target);
-                    // =========================
-                    // printf("%s\n", target);
+                    
                     BreakAdrr = GetBreakAddr(target);
-                    // printf("%llx\n", BreakAdrr);
-                    // return 0;
-                    // =========================
+                    
                     ret = ptrace(PTRACE_PEEKTEXT, pid, BreakAdrr, 0);
-                    // printf("%0xld\n", ret);
-                    // stringstream ss;
-                    // ss << hex << ret;
-                    // string hexString = ss.str();
-
-                    // Extract the first two characters
-                    // int strlen = hexString.size();
-                    // string hexPrefix = hexString.substr(strlen-2, 2);
-                    // cout<<hexString<<endl<<hexPrefix<<endl;
-                    // Convert the hex prefix back to unsigned long long
-                    // unsigned long long extractedValue = stoull(hexPrefix, nullptr, 16);
                     unsigned long long extractedValue = ret % 256;
-                    // long first_byte = static_cast<unsigned long long>(ret >> 56);
-                    // printf("ret is %llx\n", ret);
-                    // printf("first_byte is %llx\n", extractedValue);
+                    
                     BreakPointInfo bp;
                     bp.OneByte = extractedValue;
                     bp.code = ret;
